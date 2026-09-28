@@ -2,11 +2,5 @@
 - name: Remove a container on the target host
   when: cdhq.image_state == "absent"
   containers.podman.podman_container:
-    name: "{{ cdhq.image_name }}"
+    name: "{{ containers_runtime_name }}"
     state: absent
-  loop: "{{ containers_deployment_manifest }}"
-  loop_control:
-    loop_var: cdhq
-    label: >-
-      Removing {{ cdhq.image_name }}
-      on {{ inventory_hostname }}
