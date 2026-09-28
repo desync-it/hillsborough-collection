@@ -22,12 +22,10 @@
   register: containers_registered_facts
 
 - name: Assert a container exists before trying to remove
+  when: containers_registered_facts is not skipped
   ansible.builtin.assert:
     that:
-      - njgk.containers | length > 0
+      - containers_registered_facts.containers | length > 0
     fail_msg: >-
-      Cannot remove {{ njgk }} as it does
+      Cannot remove {{ containers_runtime_name }} as it does
       not exist on {{ inventory_hostname }}
-  loop: "{{ containers_registered_facts.results }}"
-  loop_control:
-    loop_var: njgk
