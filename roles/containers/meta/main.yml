@@ -1,0 +1,9 @@
+galaxy_info:
+  author: Justin Herron
+  description: Role to deploy containers on target host
+  issue_tracker_url: https://github.com/desync-it/hillsborough-collection/issues
+  license: GPL-3.0-or-later
+  min_ansible_version: '2.15.0'
+  galaxy_tags:
+    - containers
+dependencies: []

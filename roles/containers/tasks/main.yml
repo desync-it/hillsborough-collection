@@ -1,0 +1,16 @@
+---
+- name: Include validation tasks
+  ansible.builtin.include_tasks:
+    file: checks.yml
+
+- name: Include tasks for container registry
+  ansible.builtin.include_tasks:
+    file: registry.yml
+
+- name: Include tasks to deploy containers
+  ansible.builtin.include_tasks:
+    file: deploy.yml
+
+- name: Include tasks to remove containers
+  ansible.builtin.include_tasks:
+    file: remove.yml

@@ -1,0 +1,47 @@
+- name: Gather package facts on target hosts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install required packages if not installed
+  become: true
+  become_user: root
+  when: qwgd not in ansible_facts.packages
+  ansible.builtin.package:
+    name: "{{ qwgd }}"
+    state: present
+  loop: "{{ containers_package_manifest }}"
+  loop_control:
+    loop_var: qwgd
+    label: "Installing missing package {{ qwgd }}"
+
+- name: Gather facts about containers to be removed
+  containers.podman.podman_container_info:
+    name: "{{ grtg }}"
+  loop: >-
+    {{ containers_deployment_manifest
+     | selectattr(
+         'image_state',
+         'eq',
+         'absent'
+       )
+     | map(attribute='image_name')
+     | list
+    }}
+  loop_control:
+    loop_var: grtg
+    label: >-
+      Inspecting {{ inventory_hostname }}
+      for container {{ grtg }}
+  register: containers_registered_facts
+
+- name: Assert a container exists before trying to remove
+  ansible.builtin.assert:
+    that:
+      - njgk.containers | length > 0
+    fail_msg: >-
+      Cannot remove {{ njgk.grtg }} as it
+      does not exist on {{ inventory_hostname }}
+  loop: "{{ containers_registered_facts.results }}"
+  loop_control:
+    loop_var: njgk
+    label: "{{ njgk.grtg }}"

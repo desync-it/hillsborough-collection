@@ -1,0 +1,18 @@
+namespace: hillsborough
+name: college
+version: 1.0.0
+readme: README.md
+authors:
+  - Justin Herron <jherron@redhat.com>
+description: >-
+  Collection of roles developed for Red Hat 
+  Academy workshops for Hillsborough college
+license:
+  - GPL-3.0-or-later
+tags:
+  - automation
+dependencies: {}
+repository: http://github.com/desync-it
+homepage: https://github.com/desync-it/hillsborough-collection
+issues: https://github.com/desync-it/hillsborough-collection/issues
+build_ignore: []

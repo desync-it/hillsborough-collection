@@ -1,0 +1,20 @@
+---
+- name: Deploy a container on the target host
+  when: ghjc.image_state == "present"
+  containers.podman.podman_container:
+    name: "{{ ghjc.image_name }}"
+    image: >-
+      {{ ghjc.registry
+       ~ '/'
+       ~ ghjc.image_name
+       ~ ':'
+       ~ ghjc.image_tag
+      }}
+    network: host
+    state: started
+  loop: "{{ containers_deployment_manifest }}"
+  loop_control:
+    loop_var: ghjc
+    label: >-
+      Deploying {{ ghjc.image_name }}
+      on {{ inventory_hostname }}

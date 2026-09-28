@@ -1,0 +1,20 @@
+---
+- name: Login to container registry
+  containers.podman.podman_login:
+    registry: "{{ higl.registry }}"
+    username: "{{ higl.registry_user }}"
+    password: "{{ higl.registry_token }}"
+  loop: >-
+    {{ containers_deployment_manifest
+     | selectattr(
+            'image_state',
+            'eq',
+            'present'
+       )
+     | list
+    }}
+  loop_control:
+    loop_var: higl
+    label: >-
+      Logging into container registry {{ higl.registry }}
+      for image {{ higl.image_name }}
