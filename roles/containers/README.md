@@ -3,25 +3,21 @@
 Ansible role to deploy or remove container imags on target hosts.
 
 ## Role Variables
+|         Variable              | description                        | type   | default | required |  
+|-------------------------------|------------------------------------|--------|---------|----------|  
+| `containers_package_manifest` | Packages to install on target host | `list` |  null   | `false`  |  
+| `containers_registry` | Registry url with namespace        | `str` | null | `true` |  
+| `containers_registry_user` | Username to use to login to a registry | `str` | null | `false` |  
+| `containers_registry_token` | Token to use to login to a registry | `str` | null | `false` |  
+| `containers_runtime_name`     | String to use when naming the container at runtime | `str` | null | `true` |  
+| `containers_runtime_image` | Name of the container to pull and deploy | `str` | null | `false` |  
+| `containers_runtime_image_tag` | Image tag to pull from registry | `str` | latest | `false` |  
+| `containers_runtime_image_state` | Expected state of container on target host | `str` | null | `true` |  
 
-### Lists
-| Variable | description | type | default | required |
-|----------|-------------|------|---------|----------|
-|`containers_deployment_manifest` | header variable to hold a list of dictionaries | `list` | `[]` | true |
-
-### Dictionary format
-| Variable | description | type | default | required |
-|----------|-------------|------|---------|----------|
-| `name`   | Short description | `str` | "" | `true` |
-| `registry` | URL container of the container registry | `str` | "" | `false` if `image_state` is absent |
-| `registry_user` | Username to login to container registry | `str` | "" | `false` if `image_state` is absent | 
-| `registry_token` | Token to use to login to container registry | `str` | "" | `false` if `image_state` is absent |
-| `image_name` | Name of image in container registry and expected name of container to run on target hosts | `str` | "" | `true` |
-| `image_state` | Supported values `present` or `absent` | `str` | "" | `true` |
-| `image_tag`  | `Container tag to pull` | `str` | "" | `true` |
 
 ### Dependencies
-```
+
+```yaml
 - name: containers.podman
   type: collection
   version: >= 1.20.2
@@ -36,14 +32,13 @@ Ansible role to deploy or remove container imags on target hosts.
   roles:
     - role: hillsborough.college.containers
       vars:
-        containers_manifest:
-           - name: Deploy the gears web server
-             registry: registry.gitlab.com/hillsborough-college
-             registry_user: "{{ containers_registry_user }}"
-             registry_password: "{{ containers_registry_password }}"
-             image_name: hillsborough-webserver
-             image_state: present
-             image_tag: v1.0
+        containers_registry: quay.io/desync
+        containers_runtime_name: hillsborough-webserver
+        containers_runtime_image: hillsborough-webserver
+        containers_runtime_image_tag: latest
+        containers_runtime_image_state: present
+        containers_package_manifest:
+          - podman 
 ```
 
 ### License

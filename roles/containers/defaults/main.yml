@@ -1,3 +1,9 @@
 ---
 containers_package_manifest: []
-containers_deployment_manifest: []
+containers_registry:
+containers_registry_user:
+containers_registry_token:
+containers_runtime_name:
+containers_runtime_image:
+containers_runtime_image_tag: latest
+containers_runtime_image_state:
