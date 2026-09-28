@@ -1,6 +1,6 @@
 ---
 - name: Remove a container on the target host
-  when: cdhq.image_state == "absent"
+  when: containers_runtime_image_state == 'absent'
   containers.podman.podman_container:
     name: "{{ containers_runtime_name }}"
     state: absent
