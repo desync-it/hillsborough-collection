@@ -1,20 +1,10 @@
 ---
 - name: Login to container registry
+  when:
+    - containers_registry is defined
+    - containers_registry_user is defined
+    - containers_registry_token is defined
   containers.podman.podman_login:
-    registry: "{{ higl.registry }}"
-    username: "{{ higl.registry_user }}"
-    password: "{{ higl.registry_token }}"
-  loop: >-
-    {{ containers_deployment_manifest
-     | selectattr(
-            'image_state',
-            'eq',
-            'present'
-       )
-     | list
-    }}
-  loop_control:
-    loop_var: higl
-    label: >-
-      Logging into container registry {{ higl.registry }}
-      for image {{ higl.image_name }}
+    registry: "{{ containers_registry }}"
+    username: "{{ containers_registry_user }}"
+    password: "{{ containers_registry_token }}"
